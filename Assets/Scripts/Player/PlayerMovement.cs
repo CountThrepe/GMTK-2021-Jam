@@ -4,6 +4,7 @@ using UnityEngine.InputSystem;
 public class PlayerMovement : MonoBehaviour
 {
     public float speed = 5;
+    public YarnController yarn;
 
     private Vector2 move;
     private Rigidbody2D rb;
@@ -19,5 +20,9 @@ public class PlayerMovement : MonoBehaviour
     public void OnMove(InputValue value)
     {
         move = value.Get<Vector2>() * speed;
+    }
+
+    public void OnStitch() {
+        yarn.Stitch();
     }
 }
