@@ -41,9 +41,15 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
-  - name: Background
+  - name: Back
+    uniqueID: 3850476983
+    locked: 0
+  - name: Canvas
     uniqueID: 3348658811
     locked: 0
-  - name: Player
+  - name: Embroidery
     uniqueID: 1500142619
+    locked: 0
+  - name: Front
+    uniqueID: 2012721541
     locked: 0

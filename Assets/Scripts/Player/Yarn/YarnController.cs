@@ -8,6 +8,8 @@ public class YarnController : MonoBehaviour
     public Transform player;
     public Transform LastStitch;
     public GameObject platformPrefab;
+    public SpriteRenderer spool;
+    public Sprite[] spoolSprites;
 
     private SpriteShapeController spriteShape;
     private Spline yarnSpline;
@@ -39,6 +41,8 @@ public class YarnController : MonoBehaviour
             platform.transform.localRotation = GetPlatformRotation();
             platform.transform.localScale = GetPlatformScale();
         }
+
+        UpdateSpool();
     }
 
     public void Stitch() {
@@ -51,6 +55,9 @@ public class YarnController : MonoBehaviour
             platform = Instantiate(platformPrefab, GetPlatformCenter(), GetPlatformRotation());
             platform.transform.localScale = GetPlatformScale();
         } else {
+            platform.transform.position = GetPlatformCenter();
+            platform.transform.localRotation = GetPlatformRotation();
+            platform.transform.localScale = GetPlatformScale();
             platform.GetComponent<Collider2D>().enabled = true;
         }
 
@@ -73,20 +80,13 @@ public class YarnController : MonoBehaviour
 
     private Vector3 GetPlatformScale() {
         Vector3 scale = platform.transform.localScale;
-        scale.x = Vector2.Distance(player.position, LastStitch.position) * 0.5f;
+        scale.x = Vector2.Distance(player.position, LastStitch.position) / 1.9f;
         return scale;
     }
 
-    private float GetYarnLength() {
-        float dist = 0;
-
-        Vector2 prevStitch = yarnSpline.GetPosition(0);
-        for(int i = 1; i < yarnSpline.GetPointCount(); i++) {
-            Vector2 currStitch = yarnSpline.GetPosition(i);
-            dist += Vector2.Distance(currStitch, prevStitch);
-            prevStitch = currStitch;
-        }
-
-        return dist;
+    private void UpdateSpool() {
+        float lengthFrac = (lockedLength + Vector2.Distance(LastStitch.position, player.position)) / length;
+        int spoolIndex = (int) Mathf.Floor(lengthFrac * spoolSprites.Length);
+        spool.sprite = spoolSprites[spoolIndex];
     }
 }

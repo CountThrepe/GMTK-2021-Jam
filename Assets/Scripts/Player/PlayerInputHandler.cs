@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
 
 public class PlayerInputHandler : MonoBehaviour
 {
@@ -23,5 +24,13 @@ public class PlayerInputHandler : MonoBehaviour
 
     public void OnStitch() {
         yarn.Stitch();
+    }
+
+    public void OnRestart() {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+    }
+
+    public void OnEscape() {
+        Application.Quit();
     }
 }
