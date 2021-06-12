@@ -46,6 +46,8 @@ public class YarnController : MonoBehaviour
     }
 
     public void Stitch() {
+        if(behind && lockedLength + Vector2.Distance(LastStitch.position, player.position) > length) return;
+
         int index = yarnSpline.GetPointCount() - 1;
 
         yarnSpline.InsertPointAt(index, player.position + new Vector3(0, 0, 0.1f));
@@ -59,6 +61,14 @@ public class YarnController : MonoBehaviour
             platform.transform.localRotation = GetPlatformRotation();
             platform.transform.localScale = GetPlatformScale();
             platform.GetComponent<Collider2D>().enabled = true;
+
+            // Check for tears
+            RaycastHit2D[] hits = Physics2D.RaycastAll(LastStitch.position, player.position, Vector2.Distance(LastStitch.position, player.position), LayerMask.GetMask("Tear"));
+            foreach(RaycastHit2D hit in hits) {
+                if(hit.collider != null) {
+                    hit.collider.gameObject.GetComponent<TearHandler>().Close();
+                }
+            }
         }
 
         lockedLength += Vector2.Distance(LastStitch.position, player.position);
@@ -85,7 +95,7 @@ public class YarnController : MonoBehaviour
     }
 
     private void UpdateSpool() {
-        float lengthFrac = (lockedLength + Vector2.Distance(LastStitch.position, player.position)) / length;
+        float lengthFrac = (lockedLength + Vector2.Distance(LastStitch.position, player.position)) / (length + 10);
         int spoolIndex = (int) Mathf.Floor(lengthFrac * spoolSprites.Length);
         spool.sprite = spoolSprites[spoolIndex];
     }

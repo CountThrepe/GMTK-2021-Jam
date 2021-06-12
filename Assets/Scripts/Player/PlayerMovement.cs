@@ -16,6 +16,7 @@ public class PlayerMovement : MonoBehaviour
 	private bool m_FacingRight = true;  // For determining which way the player is currently facing.
 	private Vector3 m_Velocity = Vector3.zero;
     private bool canJump = true;
+	private bool frozen = false;
     private int cantJumpCounter = 0;
 
 	[Header("Events")]
@@ -58,8 +59,10 @@ public class PlayerMovement : MonoBehaviour
 
 	public void Move(float move, bool jump)
 	{
+		if(frozen) return;
+
 		//only control the player if grounded or airControl is turned on
-		if (m_Grounded || m_AirControl)
+		if (m_Grounded || (m_AirControl && move != 0))
 		{
 			// Move the character by finding the target velocity
 			Vector3 targetVelocity = new Vector2(move * m_Speed, m_Rigidbody2D.velocity.y);
@@ -88,6 +91,13 @@ public class PlayerMovement : MonoBehaviour
             canJump = false;
             cantJumpCounter = 0;
 		}
+	}
+
+	public void Celebrate() {
+		frozen = true;
+		m_Rigidbody2D.velocity = Vector2.zero;
+		m_Rigidbody2D.isKinematic = true;
+		// Play celebration animation
 	}
 
 
