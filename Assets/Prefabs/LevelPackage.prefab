@@ -390,15 +390,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ff43041f2f2d2f9448f9cd7959cbe7f0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  tears: 0
   player: {fileID: 6111538916331177100}
-  ui: {fileID: 0}
-  cam: {fileID: 0}
-  enemies: {fileID: 0}
-  maxHearts: 3
-  fadeWait: 0.5
-  fadeOutDuration: 1
-  fadeInDuration: 2
-  cameraOffset: {x: 0, y: 0, z: 0}
 --- !u!1 &762110978
 GameObject:
   m_ObjectHideFlags: 0
@@ -958,7 +951,9 @@ MonoBehaviour:
   length: 200
   player: {fileID: 483545831}
   LastStitch: {fileID: 421302081}
-  platformPrefab: {fileID: 107752827970110816, guid: f0e214000d8b03445be96ccf974e3b9d,
+  backPlatformPrefab: {fileID: 107752827970110816, guid: ebc44b9c866fd2844bab0196beb1ee7a,
+    type: 3}
+  frontPlatformPrefab: {fileID: 107752827970110816, guid: f0e214000d8b03445be96ccf974e3b9d,
     type: 3}
   spool: {fileID: 302922455}
   spoolSprites:
@@ -1023,12 +1018,12 @@ PrefabInstance:
     - target: {fileID: 6074470365975373055, guid: 5a689745b1effcb4782c573044ba8219,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 5.8
+      value: -11.8
       objectReference: {fileID: 0}
     - target: {fileID: 6074470365975373055, guid: 5a689745b1effcb4782c573044ba8219,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 9.8
+      value: -16.6
       objectReference: {fileID: 0}
     - target: {fileID: 6074470365975373055, guid: 5a689745b1effcb4782c573044ba8219,
         type: 3}

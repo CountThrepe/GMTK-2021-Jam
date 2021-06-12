@@ -7,7 +7,8 @@ public class YarnController : MonoBehaviour
 
     public Transform player;
     public Transform LastStitch;
-    public GameObject platformPrefab;
+    public GameObject backPlatformPrefab;
+    public GameObject frontPlatformPrefab;
     public SpriteRenderer spool;
     public Sprite[] spoolSprites;
 
@@ -28,6 +29,10 @@ public class YarnController : MonoBehaviour
         yarnSpline.SetPosition(0, LastStitch.position);
 
         LastStitch.GetComponent<DistanceJoint2D>().distance = length;
+        
+        // Create back platform
+        platform = Instantiate(backPlatformPrefab, GetPlatformCenter(), GetPlatformRotation());
+        platform.transform.localScale = GetPlatformScale();
     }
 
     // Update is called once per frame
@@ -54,13 +59,43 @@ public class YarnController : MonoBehaviour
         yarnSpline.SetHeight(index, 0.1f);
 
         if(behind) {
-            platform = Instantiate(platformPrefab, GetPlatformCenter(), GetPlatformRotation());
-            platform.transform.localScale = GetPlatformScale();
-        } else {
+            // Finish back platform;
             platform.transform.position = GetPlatformCenter();
             platform.transform.localRotation = GetPlatformRotation();
             platform.transform.localScale = GetPlatformScale();
-            platform.GetComponent<Collider2D>().enabled = true;
+
+            // Swap active platforms
+            GameObject[] backPlatforms = GameObject.FindGameObjectsWithTag("BackPlatform");
+            foreach(var bp in backPlatforms) {
+                bp.GetComponent<BoxCollider2D>().enabled = false;
+            }
+            GameObject[] frontPlatforms = GameObject.FindGameObjectsWithTag("FrontPlatform");
+            foreach(var fp in frontPlatforms) {
+                fp.GetComponent<BoxCollider2D>().enabled = true;
+            }
+
+            // Create front platform
+            platform = Instantiate(frontPlatformPrefab, GetPlatformCenter(), GetPlatformRotation());
+            platform.transform.localScale = GetPlatformScale();
+        } else {
+            // Finish front platform
+            platform.transform.position = GetPlatformCenter();
+            platform.transform.localRotation = GetPlatformRotation();
+            platform.transform.localScale = GetPlatformScale();
+
+            // Swap active platforms
+            GameObject[] backPlatforms = GameObject.FindGameObjectsWithTag("BackPlatform");
+            foreach(var bp in backPlatforms) {
+                bp.GetComponent<BoxCollider2D>().enabled = true;
+            }
+            GameObject[] frontPlatforms = GameObject.FindGameObjectsWithTag("FrontPlatform");
+            foreach(var fp in frontPlatforms) {
+                fp.GetComponent<BoxCollider2D>().enabled = false;
+            }
+
+            // Create back platform
+            platform = Instantiate(backPlatformPrefab, GetPlatformCenter(), GetPlatformRotation());
+            platform.transform.localScale = GetPlatformScale();
 
             // Check for tears
             RaycastHit2D[] hits = Physics2D.RaycastAll(LastStitch.position, player.position, Vector2.Distance(LastStitch.position, player.position), LayerMask.GetMask("Tear"));
