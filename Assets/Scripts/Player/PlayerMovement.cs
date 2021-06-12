@@ -18,6 +18,9 @@ public class PlayerMovement : MonoBehaviour
     private bool canJump = true;
     private int cantJumpCounter = 0;
 
+	public Animator animator;
+	private SpriteRenderer spr;
+
 	[Header("Events")]
 	[Space]
 
@@ -26,6 +29,7 @@ public class PlayerMovement : MonoBehaviour
 	private void Awake()
 	{
 		m_Rigidbody2D = GetComponent<Rigidbody2D>();
+		spr = GetComponent<SpriteRenderer>();
 
 		if (OnLandEvent == null)
 			OnLandEvent = new UnityEvent();
@@ -45,7 +49,9 @@ public class PlayerMovement : MonoBehaviour
 			{
 				m_Grounded = true;
 				if (!wasGrounded)
+				{
 					OnLandEvent.Invoke();
+				}
 			}
 		}
 
@@ -58,6 +64,7 @@ public class PlayerMovement : MonoBehaviour
 
 	public void Move(float move, bool jump)
 	{
+		
 		//only control the player if grounded or airControl is turned on
 		if (m_Grounded || m_AirControl)
 		{
@@ -81,13 +88,21 @@ public class PlayerMovement : MonoBehaviour
 		}
 		// If the player should jump...
 		if (m_Grounded && jump && canJump)
-		{
+		{ 
 			// Add a vertical force to the player.
-			m_Grounded = false;
 			m_Rigidbody2D.AddForce(new Vector2(0f, m_JumpForce));
             canJump = false;
             cantJumpCounter = 0;
 		}
+
+		if(!m_Grounded)
+		{
+			animator.SetBool("notGrounded", true);
+		}
+		//Tell the animator if we're moving horizontally
+		animator.SetFloat("Speed", Mathf.Abs(move));
+		//Tell the animator our vertical speed
+		animator.SetFloat("vSpeed", m_Rigidbody2D.velocity.y);
 	}
 
 
@@ -100,5 +115,20 @@ public class PlayerMovement : MonoBehaviour
 		Vector3 theScale = transform.localScale;
 		theScale.x *= -1;
 		transform.localScale = theScale;
+	}
+
+	public void onLanding()
+	{
+		animator.SetBool("notGrounded", false);
+	}
+
+	public void frontToBack()
+	{
+		this.spr.sortingLayerName = "Back";
+	}
+
+	public void backToFront()
+	{
+		this.spr.sortingLayerName = "Front";
 	}
 }

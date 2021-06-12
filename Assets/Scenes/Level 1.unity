@@ -152,6 +152,43 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1204763312 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6111538916331177100, guid: b85e6e457312e61428c887ae9755d0a7,
+    type: 3}
+  m_PrefabInstance: {fileID: 1289463589}
+  m_PrefabAsset: {fileID: 0}
+--- !u!95 &1204763314
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1204763312}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 82495993b7dd0e943873a64cf867d3a6, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &1204763315 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 44005611325135738, guid: b85e6e457312e61428c887ae9755d0a7,
+    type: 3}
+  m_PrefabInstance: {fileID: 1289463589}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1204763312}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6ce4aba2daf007a4ebec73e8f15db94f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1289463589
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -159,6 +196,46 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 44005611325135738, guid: b85e6e457312e61428c887ae9755d0a7,
+        type: 3}
+      propertyPath: anim
+      value: 
+      objectReference: {fileID: 1204763314}
+    - target: {fileID: 44005611325135738, guid: b85e6e457312e61428c887ae9755d0a7,
+        type: 3}
+      propertyPath: animator
+      value: 
+      objectReference: {fileID: 1204763314}
+    - target: {fileID: 44005611325135738, guid: b85e6e457312e61428c887ae9755d0a7,
+        type: 3}
+      propertyPath: OnLandEvent.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 44005611325135738, guid: b85e6e457312e61428c887ae9755d0a7,
+        type: 3}
+      propertyPath: OnLandEvent.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 44005611325135738, guid: b85e6e457312e61428c887ae9755d0a7,
+        type: 3}
+      propertyPath: OnLandEvent.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1204763315}
+    - target: {fileID: 44005611325135738, guid: b85e6e457312e61428c887ae9755d0a7,
+        type: 3}
+      propertyPath: OnLandEvent.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 44005611325135738, guid: b85e6e457312e61428c887ae9755d0a7,
+        type: 3}
+      propertyPath: OnLandEvent.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: onLanding
+      objectReference: {fileID: 0}
+    - target: {fileID: 44005611325135738, guid: b85e6e457312e61428c887ae9755d0a7,
+        type: 3}
+      propertyPath: OnLandEvent.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
     - target: {fileID: 6111538916165196705, guid: b85e6e457312e61428c887ae9755d0a7,
         type: 3}
       propertyPath: m_Name
@@ -219,6 +296,21 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6111538916331177102, guid: b85e6e457312e61428c887ae9755d0a7,
+        type: 3}
+      propertyPath: m_SortingLayer
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6111538916331177102, guid: b85e6e457312e61428c887ae9755d0a7,
+        type: 3}
+      propertyPath: m_SortingLayerID
+      value: -444490313
+      objectReference: {fileID: 0}
+    - target: {fileID: 6111538917645695983, guid: b85e6e457312e61428c887ae9755d0a7,
+        type: 3}
+      propertyPath: animator
+      value: 
+      objectReference: {fileID: 1204763314}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b85e6e457312e61428c887ae9755d0a7, type: 3}
 --- !u!1 &1646554632
@@ -233,7 +325,7 @@ GameObject:
   - component: {fileID: 1646554635}
   - component: {fileID: 1646554634}
   m_Layer: 8
-  m_Name: New Sprite
+  m_Name: Wall
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

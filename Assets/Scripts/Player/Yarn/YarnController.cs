@@ -10,6 +10,7 @@ public class YarnController : MonoBehaviour
     public GameObject platformPrefab;
     public SpriteRenderer spool;
     public Sprite[] spoolSprites;
+    public Animator animator;
 
     private SpriteShapeController spriteShape;
     private Spline yarnSpline;
@@ -46,6 +47,9 @@ public class YarnController : MonoBehaviour
     }
 
     public void Stitch() {
+        //Tell the Animator we're starting a Stitch
+        animator.SetTrigger("makeStitch");
+
         int index = yarnSpline.GetPointCount() - 1;
 
         yarnSpline.InsertPointAt(index, player.position + new Vector3(0, 0, 0.1f));
@@ -54,11 +58,15 @@ public class YarnController : MonoBehaviour
         if(behind) {
             platform = Instantiate(platformPrefab, GetPlatformCenter(), GetPlatformRotation());
             platform.transform.localScale = GetPlatformScale();
+            //Tell Animator we're transitioning front->back
+            animator.SetBool("isFrontSide", false);
         } else {
             platform.transform.position = GetPlatformCenter();
             platform.transform.localRotation = GetPlatformRotation();
             platform.transform.localScale = GetPlatformScale();
             platform.GetComponent<Collider2D>().enabled = true;
+            //Tell Animator we're transitioning back->front
+            animator.SetBool("isFrontSide", true);
         }
 
         lockedLength += Vector2.Distance(LastStitch.position, player.position);
