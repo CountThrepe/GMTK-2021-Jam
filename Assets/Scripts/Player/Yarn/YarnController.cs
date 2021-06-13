@@ -16,6 +16,7 @@ public class YarnController : MonoBehaviour
     public GameObject frontPlatformPrefab;
     public SpriteRenderer spool;
     public Sprite[] spoolSprites;
+    public ThreadDisplay threadDisplay;
 
     public Animator animator;
     private AudioSource audioSrc;
@@ -38,6 +39,8 @@ public class YarnController : MonoBehaviour
         yarnSpline.SetPosition(0, LastStitch.position);
 
         LastStitch.GetComponent<DistanceJoint2D>().distance = length;
+
+        threadDisplay.SetTotalThread(length);
         
         // Create back platform
         platform = Instantiate(backPlatformPrefab, GetPlatformCenter(), GetPlatformRotation());
@@ -60,7 +63,9 @@ public class YarnController : MonoBehaviour
             platform.transform.localScale = GetPlatformScale();
         }
 
+        // Update UI Stuff
         UpdateSpool();
+        threadDisplay.SetCurrentThread(lockedLength + Vector2.Distance(LastStitch.position, player.position));
     }
 
     public void Stitch() {
@@ -122,7 +127,6 @@ public class YarnController : MonoBehaviour
         RaycastHit2D[] hits = Physics2D.RaycastAll(LastStitch.position, player.position - LastStitch.position, Vector2.Distance(LastStitch.position, player.position), LayerMask.GetMask("Tear"));
         foreach(RaycastHit2D hit in hits) {
             if(Vector2.Distance(LastStitch.position, hit.point) > tolerance && Vector2.Distance(player.position, hit.point) > tolerance) {
-                Debug.Log("Hit!");
                 hit.collider.gameObject.GetComponent<TearHandler>().Close(!behind);
             }
         }
