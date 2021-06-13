@@ -33,4 +33,8 @@ public class PlayerInputHandler : MonoBehaviour
     public void OnEscape() {
         LevelManager.GetInstance().TogglePause();
     }
+
+    public void OnUndo() {
+        yarn.Unstitch();
+    }
 }

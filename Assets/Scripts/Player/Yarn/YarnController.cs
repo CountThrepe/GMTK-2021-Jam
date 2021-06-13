@@ -2,10 +2,13 @@
 using UnityEngine.U2D;
 using UnityEngine.Audio;
 
+using System.Collections.Generic;
+
 public class YarnController : MonoBehaviour
 {
     public float length = 200f;
     public float tolerance = 0.1f;
+    public float unstitchTolerance = 2;
 
     public Transform player;
     public Transform LastStitch;
@@ -24,6 +27,7 @@ public class YarnController : MonoBehaviour
 
     private bool behind;
     private float lockedLength = 0;
+    private List<GameObject> platforms = new List<GameObject>();
 
     void Start()
     {
@@ -72,12 +76,13 @@ public class YarnController : MonoBehaviour
         yarnSpline.InsertPointAt(index, player.position + new Vector3(0, 0, 0.1f));
         yarnSpline.SetHeight(index, 0.1f);
 
-        if(behind) {
-            // Finish back platform;
-            platform.transform.position = GetPlatformCenter();
-            platform.transform.localRotation = GetPlatformRotation();
-            platform.transform.localScale = GetPlatformScale();
+        // Finish current platform
+        platform.transform.position = GetPlatformCenter();
+        platform.transform.localRotation = GetPlatformRotation();
+        platform.transform.localScale = GetPlatformScale();
+        platforms.Add(platform);
 
+        if(behind) {
             // Swap active platforms
             GameObject[] backPlatforms = GameObject.FindGameObjectsWithTag("BackPlatform");
             foreach(var bp in backPlatforms) {
@@ -95,11 +100,6 @@ public class YarnController : MonoBehaviour
             //Tell Animator we're transitioning front->back
             animator.SetBool("isFrontSide", false);
         } else {
-            // Finish front platform
-            platform.transform.position = GetPlatformCenter();
-            platform.transform.localRotation = GetPlatformRotation();
-            platform.transform.localScale = GetPlatformScale();
-
             // Swap active platforms
             GameObject[] backPlatforms = GameObject.FindGameObjectsWithTag("BackPlatform");
             foreach(var bp in backPlatforms) {
@@ -132,6 +132,53 @@ public class YarnController : MonoBehaviour
         LastStitch.GetComponent<DistanceJoint2D>().distance = length - lockedLength;
 
         behind = !behind;
+    }
+
+    public void Unstitch() {
+        if(Vector2.Distance(LastStitch.position, player.position) < unstitchTolerance) {
+            Destroy(platform);
+
+            platform = platforms[platforms.Count - 1];
+            platforms.RemoveAt(platforms.Count - 1);
+
+            yarnSpline.RemovePointAt(yarnSpline.GetPointCount() - 2);
+
+            if(behind) {
+                animator.SetBool("isFrontSide", false);
+
+                // Swap active platforms
+                GameObject[] backPlatforms = GameObject.FindGameObjectsWithTag("BackPlatform");
+                foreach(var bp in backPlatforms) {
+                    bp.GetComponent<BoxCollider2D>().enabled = false;
+                }
+                GameObject[] frontPlatforms = GameObject.FindGameObjectsWithTag("FrontPlatform");
+                foreach(var fp in frontPlatforms) {
+                    if(fp == platform) continue;
+                    fp.GetComponent<BoxCollider2D>().enabled = true;
+                }
+            } else {
+                animator.SetBool("isFrontSide", true);
+
+                // Swap active platforms
+                GameObject[] backPlatforms = GameObject.FindGameObjectsWithTag("BackPlatform");
+                foreach(var bp in backPlatforms) {
+                    if(bp == platform) continue;
+                    bp.GetComponent<BoxCollider2D>().enabled = true;
+                }
+                GameObject[] frontPlatforms = GameObject.FindGameObjectsWithTag("FrontPlatform");
+                foreach(var fp in frontPlatforms) {
+                    fp.GetComponent<BoxCollider2D>().enabled = false;
+                }
+            }
+
+            lockedLength -= 2 * Vector2.Distance(LastStitch.position, platform.transform.position);
+            LastStitch.position = LastStitch.position - 2 * (LastStitch.position - platform.transform.position);
+            LastStitch.GetComponent<DistanceJoint2D>().distance = length - lockedLength;
+
+            behind = !behind;
+
+            animator.SetTrigger("makeStitch");
+        }
     }
 
     private Vector2 GetPlatformCenter() {
