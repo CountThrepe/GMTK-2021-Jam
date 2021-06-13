@@ -21,8 +21,8 @@ public class PlayerMovement : MonoBehaviour
 
 	public Animator animator;
 	private SpriteRenderer spr;
-	private AudioSource audioSrc;
-
+	public AudioSource jumpSrc, leftSrc, rightSrc;
+	
 	[Header("Events")]
 	[Space]
 
@@ -32,7 +32,6 @@ public class PlayerMovement : MonoBehaviour
 	{
 		m_Rigidbody2D = GetComponent<Rigidbody2D>();
 		spr = GetComponent<SpriteRenderer>();
-		audioSrc = GetComponent<AudioSource>();
 
 		if (OnLandEvent == null)
 			OnLandEvent = new UnityEvent();
@@ -94,7 +93,7 @@ public class PlayerMovement : MonoBehaviour
 		if (m_Grounded && jump && canJump)
 		{ 
 			//Play Sound
-			audioSrc.Play();
+			jumpSrc.Play();
 			// Add a vertical force to the player.
 			m_Rigidbody2D.AddForce(new Vector2(0f, m_JumpForce));
             canJump = false;
@@ -138,11 +137,21 @@ public class PlayerMovement : MonoBehaviour
 
 	public void frontToBack()
 	{
-		this.spr.sortingLayerName = "Back";
+		spr.sortingLayerName = "Back";
 	}
 
 	public void backToFront()
 	{
-		this.spr.sortingLayerName = "Front";
+		spr.sortingLayerName = "Front";
+	}
+
+	public void leftStep()
+	{
+		leftSrc.Play();
+	}
+
+	public void rightStep()
+	{
+		rightSrc.Play();
 	}
 }
