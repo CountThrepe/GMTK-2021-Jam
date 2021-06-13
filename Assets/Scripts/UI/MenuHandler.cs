@@ -1,13 +1,16 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 
 public class MenuHandler : MonoBehaviour
 {
     private bool mainMenu;
     public PauseManager pauseManager;
     public MainMenuHandler trans;
+    public GameObject credits;
 
     void Start() {
         mainMenu = (trans != null);
+        credits.gameObject.SetActive(false);
     }
 
     public void Play()
@@ -19,5 +22,15 @@ public class MenuHandler : MonoBehaviour
     public void Quit()
     {
         Application.Quit();
+    }
+
+    public void Credits()
+    {
+        credits.gameObject.SetActive(true);
+    }
+
+    public void CloseCredits()
+    {
+        credits.gameObject.SetActive(false);
     }
 }
