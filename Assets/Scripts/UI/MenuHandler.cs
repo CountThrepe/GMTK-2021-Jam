@@ -10,7 +10,7 @@ public class MenuHandler : MonoBehaviour
 
     void Start() {
         mainMenu = (trans != null);
-        credits.gameObject.SetActive(false);
+        if(credits != null) credits.gameObject.SetActive(false);
     }
 
     public void Play()
