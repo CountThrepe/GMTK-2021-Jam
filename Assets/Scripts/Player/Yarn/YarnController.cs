@@ -4,6 +4,7 @@ using UnityEngine.U2D;
 public class YarnController : MonoBehaviour
 {
     public float length = 200f;
+    public float tolerance = 0.1f;
 
     public Transform player;
     public Transform LastStitch;
@@ -81,6 +82,7 @@ public class YarnController : MonoBehaviour
             // Create front platform
             platform = Instantiate(frontPlatformPrefab, GetPlatformCenter(), GetPlatformRotation());
             platform.transform.localScale = GetPlatformScale();
+
             //Tell Animator we're transitioning front->back
             animator.SetBool("isFrontSide", false);
         } else {
@@ -103,16 +105,17 @@ public class YarnController : MonoBehaviour
             platform = Instantiate(backPlatformPrefab, GetPlatformCenter(), GetPlatformRotation());
             platform.transform.localScale = GetPlatformScale();
 
-            // Check for tears
-            RaycastHit2D[] hits = Physics2D.RaycastAll(LastStitch.position, player.position, Vector2.Distance(LastStitch.position, player.position), LayerMask.GetMask("Tear"));
-            foreach(RaycastHit2D hit in hits) {
-                if(hit.collider != null) {
-                    hit.collider.gameObject.GetComponent<TearHandler>().Close();
-                }
-            }
-
             //Tell Animator we're transitioning back->front
             animator.SetBool("isFrontSide", true);
+        }
+
+        // Check for tears
+        RaycastHit2D[] hits = Physics2D.RaycastAll(LastStitch.position, player.position - LastStitch.position, Vector2.Distance(LastStitch.position, player.position), LayerMask.GetMask("Tear"));
+        foreach(RaycastHit2D hit in hits) {
+            if(Vector2.Distance(LastStitch.position, hit.point) > tolerance && Vector2.Distance(player.position, hit.point) > tolerance) {
+                Debug.Log("Hit!");
+                hit.collider.gameObject.GetComponent<TearHandler>().Close(!behind);
+            }
         }
 
         lockedLength += Vector2.Distance(LastStitch.position, player.position);

@@ -18,7 +18,7 @@ public class MainMenuHandler : MonoBehaviour
     {
         if(transEnd != -1)
         {
-            if(Time.time > transEnd) SceneManager.LoadScene(1);
+            if(Time.time > transEnd) SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
         }
     }
 

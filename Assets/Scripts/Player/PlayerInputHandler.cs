@@ -31,6 +31,6 @@ public class PlayerInputHandler : MonoBehaviour
     }
 
     public void OnEscape() {
-        Application.Quit();
+        LevelManager.GetInstance().TogglePause();
     }
 }

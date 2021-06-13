@@ -2,10 +2,13 @@
 
 public class MenuHandler : MonoBehaviour
 {
-    public bool mainMenu = true;
+    private bool mainMenu;
     public PauseManager pauseManager;
     public MainMenuHandler trans;
 
+    void Start() {
+        mainMenu = (trans != null);
+    }
 
     public void Play()
     {

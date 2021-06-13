@@ -4,12 +4,30 @@ using UnityEngine;
 
 public class TearHandler : MonoBehaviour
 {
-    private bool open = true;
+    public Sprite[] tearSprites;
 
-    public void Close() {
-        if(open) {
+    private bool backPatched, frontPatched;
+    private SpriteRenderer sprite;
+
+    void Start() {
+        sprite = GetComponent<SpriteRenderer>();
+
+        backPatched = false;
+        frontPatched = false;
+
+        sprite.sprite = tearSprites[0];
+    }
+
+    public void Close(bool front) {
+        if(backPatched && frontPatched) return;
+
+        if(front) frontPatched = true;
+        else backPatched = true;
+
+        if(frontPatched ^ backPatched) sprite.sprite = tearSprites[1];
+        else if(backPatched && frontPatched) {
             Debug.Log("Closing!");
-            open = false;
+            sprite.sprite = tearSprites[2];
             LevelManager.GetInstance().TearClosed();
         }
     }

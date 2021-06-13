@@ -68,7 +68,7 @@ public class PlayerMovement : MonoBehaviour
 		if(frozen) return;
 		
 		//only control the player if grounded or airControl is turned on
-		if (m_Grounded || (m_AirControl && move != 0))
+		if (m_Grounded || m_AirControl)
 		{
 			// Move the character by finding the target velocity
 			Vector3 targetVelocity = new Vector2(move * m_Speed, m_Rigidbody2D.velocity.y);

@@ -7,7 +7,7 @@ public class LevelManager : MonoBehaviour
     public GameObject player; //, ui, cam, enemies;
     // private static FadeManager uiFade;
     // private static PromptManager uiPrompt;
-    // private static PauseManager uiPause;
+    public PauseManager uiPause;
     
     // public float fadeWait = 0.5f;
     // public float fadeOutDuration = 1;
@@ -117,10 +117,10 @@ public class LevelManager : MonoBehaviour
     //     uiFade.FadeOut(3, true);
     // }
 
-    // public void TogglePause()
-    // {
-    //     uiPause.TogglePause();
-    // }
+    public void TogglePause()
+    {
+        uiPause.TogglePause();
+    }
 
     // public bool IsPaused()
     // {
