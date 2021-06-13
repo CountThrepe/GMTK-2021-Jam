@@ -104,7 +104,7 @@ public class LevelManager : MonoBehaviour
     }
 
     private void NextScene() {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+        SceneManager.LoadScene((SceneManager.GetActiveScene().buildIndex + 1) % SceneManager.sceneCount);
     }
 
     // public void ShowPrompt(string prompt, float time)

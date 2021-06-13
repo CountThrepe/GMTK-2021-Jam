@@ -26,7 +26,6 @@ public class TearHandler : MonoBehaviour
 
         if(frontPatched ^ backPatched) sprite.sprite = tearSprites[1];
         else if(backPatched && frontPatched) {
-            Debug.Log("Closing!");
             sprite.sprite = tearSprites[2];
             LevelManager.GetInstance().TearClosed();
         }

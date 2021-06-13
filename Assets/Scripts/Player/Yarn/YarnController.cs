@@ -57,7 +57,7 @@ public class YarnController : MonoBehaviour
         int nPoints = yarnSpline.GetPointCount();
         yarnSpline.SetPosition(nPoints - 1, player.position);
 
-        if(!behind) {
+        if(platform != null) {
             platform.transform.position = GetPlatformCenter();
             platform.transform.localRotation = GetPlatformRotation();
             platform.transform.localScale = GetPlatformScale();
@@ -69,7 +69,8 @@ public class YarnController : MonoBehaviour
     }
 
     public void Stitch() {
-        if(behind && lockedLength + Vector2.Distance(LastStitch.position, player.position) > length) return;
+        if(platform == null) return;
+        bool newPlatform = lockedLength + Vector2.Distance(LastStitch.position, player.position) < length;
         
         //Tell the Animator we're starting a Stitch
         animator.SetTrigger("makeStitch");
@@ -99,8 +100,10 @@ public class YarnController : MonoBehaviour
             }
 
             // Create front platform
-            platform = Instantiate(frontPlatformPrefab, GetPlatformCenter(), GetPlatformRotation());
-            platform.transform.localScale = GetPlatformScale();
+            if(newPlatform) {
+                platform = Instantiate(frontPlatformPrefab, GetPlatformCenter(), GetPlatformRotation());
+                platform.transform.localScale = GetPlatformScale();
+            } else platform = null;
 
             //Tell Animator we're transitioning front->back
             animator.SetBool("isFrontSide", false);
@@ -116,8 +119,10 @@ public class YarnController : MonoBehaviour
             }
 
             // Create back platform
-            platform = Instantiate(backPlatformPrefab, GetPlatformCenter(), GetPlatformRotation());
-            platform.transform.localScale = GetPlatformScale();
+            if(newPlatform) {
+                platform = Instantiate(backPlatformPrefab, GetPlatformCenter(), GetPlatformRotation());
+                platform.transform.localScale = GetPlatformScale();
+            } else platform = null;
 
             //Tell Animator we're transitioning back->front
             animator.SetBool("isFrontSide", true);
@@ -140,7 +145,7 @@ public class YarnController : MonoBehaviour
 
     public void Unstitch() {
         if(Vector2.Distance(LastStitch.position, player.position) < unstitchTolerance) {
-            Destroy(platform);
+            if(platform!= null) Destroy(platform);
 
             platform = platforms[platforms.Count - 1];
             platforms.RemoveAt(platforms.Count - 1);
