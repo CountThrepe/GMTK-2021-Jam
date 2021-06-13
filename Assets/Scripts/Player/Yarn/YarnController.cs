@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.U2D;
+using UnityEngine.Audio;
 
 public class YarnController : MonoBehaviour
 {
@@ -12,7 +13,9 @@ public class YarnController : MonoBehaviour
     public GameObject frontPlatformPrefab;
     public SpriteRenderer spool;
     public Sprite[] spoolSprites;
+
     public Animator animator;
+    private AudioSource audioSrc;
 
     private SpriteShapeController spriteShape;
     private Spline yarnSpline;
@@ -35,6 +38,10 @@ public class YarnController : MonoBehaviour
         // Create back platform
         platform = Instantiate(backPlatformPrefab, GetPlatformCenter(), GetPlatformRotation());
         platform.transform.localScale = GetPlatformScale();
+
+        //Load Audio
+        audioSrc = GetComponent<AudioSource>();
+        //stitchSound = audio.Effects.Load<AudioClip>("stitch");
     }
 
     // Update is called once per frame
@@ -57,6 +64,8 @@ public class YarnController : MonoBehaviour
         
         //Tell the Animator we're starting a Stitch
         animator.SetTrigger("makeStitch");
+        //Play Stitch Sound
+        audioSrc.Play();
 
         int index = yarnSpline.GetPointCount() - 1;
 

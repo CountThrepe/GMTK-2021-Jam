@@ -21,6 +21,7 @@ public class PlayerMovement : MonoBehaviour
 
 	public Animator animator;
 	private SpriteRenderer spr;
+	private AudioSource audioSrc;
 
 	[Header("Events")]
 	[Space]
@@ -31,6 +32,7 @@ public class PlayerMovement : MonoBehaviour
 	{
 		m_Rigidbody2D = GetComponent<Rigidbody2D>();
 		spr = GetComponent<SpriteRenderer>();
+		audioSrc = GetComponent<AudioSource>();
 
 		if (OnLandEvent == null)
 			OnLandEvent = new UnityEvent();
@@ -91,6 +93,8 @@ public class PlayerMovement : MonoBehaviour
 		// If the player should jump...
 		if (m_Grounded && jump && canJump)
 		{ 
+			//Play Sound
+			audioSrc.Play();
 			// Add a vertical force to the player.
 			m_Rigidbody2D.AddForce(new Vector2(0f, m_JumpForce));
             canJump = false;
@@ -112,6 +116,7 @@ public class PlayerMovement : MonoBehaviour
 		m_Rigidbody2D.velocity = Vector2.zero;
 		m_Rigidbody2D.isKinematic = true;
 		// Play celebration animation
+		animator.SetTrigger("levelComplete");
 	}
 
 
